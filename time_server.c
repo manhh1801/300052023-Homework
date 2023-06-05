@@ -46,8 +46,8 @@ int main()
     char *format2 = "dd/mm/yy";
     char *format3 = "mm/dd/yyyy";
     char *format4 = "mm/dd/yy";
-    while (1){
-
+    while (1)
+    {
         printf("Wating for new client.\n");
         int client = accept(listener, NULL,NULL);
         printf("New client connected : %d\n",client);
@@ -58,6 +58,8 @@ int main()
             struct tm tm= *localtime(&t);
             while(1)
             {
+                close(listener);
+                
                 char buf[512];
                 int ret = recv(client, buf, sizeof(buf),0);
 
@@ -68,7 +70,7 @@ int main()
                     break;
                 }
                 buf[ret] = 0;
-                // Kiem tra xau dau vao.
+                
                 char cmd[32],format[32],tmp[256];
                 int count = sscanf(buf, "%s%s%s",cmd,format,tmp);
                 if (count == 2  ){
@@ -110,9 +112,11 @@ int main()
                     send(client, msg, strlen(msg), 0);    
                 }
                 printf("Received from client %d:  %s\n",client,buf);
-               
             }
         }
-        
+        else
+        {
+            close(client);
+        }
     }
 }
