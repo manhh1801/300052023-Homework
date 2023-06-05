@@ -52,6 +52,8 @@ int main()
         {   
             while(1)
             {
+                close(listener);
+                
                 char buf[256];
                 int ret = recv(client, buf, sizeof(buf),0);
 
@@ -68,6 +70,9 @@ int main()
                 exit(0);
             }
         }
-        
+        else
+        {
+            close(client);
+        }
     }
 }
